@@ -2,8 +2,8 @@ name: 🕐 Dooray에 hello 메시지 보내기
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # 매 5분마다 실행
-  workflow_dispatch:       # 수동 실행도 가능하게 설정
+    - cron: '*/1 * * * *'  # 🔁 매 1분마다 실행
+  workflow_dispatch:       # 🧪 수동 실행도 가능
 
 jobs:
   send-message:
