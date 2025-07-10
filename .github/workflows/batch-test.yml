@@ -1,0 +1,26 @@
+name: 🕐 Dooray에 hello 메시지 보내기
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # 매 5분마다 실행
+  workflow_dispatch:       # 수동 실행도 가능하게 설정
+
+jobs:
+  send-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔄 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Node.js 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 의존성 설치
+        run: yarn install
+
+      - name: 🚀 메시지 전송
+        run: node send-message.js
+        env:
+          DOORAY_WEBHOOK_URL: ${{ secrets.DOORAY_WEBHOOK_URL }}
