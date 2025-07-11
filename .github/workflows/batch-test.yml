@@ -1,8 +1,8 @@
-name: 🕐 Dooray에 hello 메시지 보내기
+name: 🕐 1시간마다 Playwright 테스트 & Dooray 알림
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # 매 5분마다 실행
+    - cron: '0 * * * *'  # 매 시간마다 실행
   workflow_dispatch:       # 수동 실행도 가능하게 설정
 
 jobs:
@@ -20,7 +20,18 @@ jobs:
       - name: 📦 의존성 설치
         run: yarn install
 
-      - name: 🚀 메시지 전송
-        run: node send-message.js
+      - name: 🧪 Playwright 설치
+        run: npx playwright install --with-deps
+
+      - name: 🚀 테스트 실행
+        run: |
+          npx playwright test > result.txt || true
+        env:
+          ADMIN_MEMBER_ID: ${{ secrets.ADMIN_MEMBER_ID }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          ADMIN_NAME: ${{ secrets.ADMIN_NAME }}
+
+      - name: 📤 Dooray로 결과 전송
+        run: node send-result.js
         env:
           DOORAY_WEBHOOK_URL: ${{ secrets.DOORAY_WEBHOOK_URL }}
