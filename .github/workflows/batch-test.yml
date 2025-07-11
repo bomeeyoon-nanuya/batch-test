@@ -3,7 +3,7 @@ name: 🕐 1시간마다 Playwright 테스트 & Dooray 알림
 on:
   schedule:
     - cron: '0 * * * *'  # 매 시간마다 실행
-  workflow_dispatch:       # 수동 실행도 가능하게 설정
+  workflow_dispatch:
 
 jobs:
   send-message:
@@ -20,8 +20,14 @@ jobs:
       - name: 📦 의존성 설치
         run: yarn install
 
+      - name: 📦 Playwright 캐시 복원
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright
+
       - name: 🧪 Playwright 설치
-        run: npx playwright install --with-deps
+        run: npx playwright install
 
       - name: 🚀 테스트 실행
         run: |
