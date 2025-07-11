@@ -1,12 +1,12 @@
-name: 🕐 1시간마다 Playwright 테스트 & Dooray 알림
+name: 🕐 1시간마다 Playwright 테스트 & Dooray 알림 (Trace 포함)
 
 on:
   schedule:
-    - cron: '0 * * * *'  # 매 시간마다 실행
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
-  send-message:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - name: 🔄 저장소 체크아웃
@@ -29,9 +29,9 @@ jobs:
       - name: 🧪 Playwright 설치
         run: npx playwright install
 
-      - name: 🚀 테스트 실행
+      - name: 🚀 테스트 실행 (Trace ON)
         run: |
-          npx playwright test > result.txt || true
+          npx playwright test --trace on > result.txt || true
         env:
           ADMIN_MEMBER_ID: ${{ secrets.ADMIN_MEMBER_ID }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
@@ -41,3 +41,14 @@ jobs:
         run: node send-result.js
         env:
           DOORAY_WEBHOOK_URL: ${{ secrets.DOORAY_WEBHOOK_URL }}
+
+      - name: 📦 Trace 아카이브 압축
+        if: always()
+        run: zip -r trace-artifacts.zip playwright-report/ || true
+
+      - name: 📥 Trace 결과 업로드
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-trace
+          path: trace-artifacts.zip
