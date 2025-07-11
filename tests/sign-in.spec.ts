@@ -6,6 +6,10 @@ globalThis.adminPassword = process.env.ADMIN_PASSWORD || '';
 globalThis.adminMemberName = process.env.ADMIN_NAME || '';
 
 test('일반 회원 로그인', async ({ page }) => {
+    await page.setExtraHTTPHeaders({
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/115 Safari/537.36'
+    });
+
   await page.goto('https://alpha-service.shopby.co.kr/login?redirectUrl=%2F');
 
   // 페이지 로드 대기

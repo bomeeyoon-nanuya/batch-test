@@ -44,8 +44,11 @@ jobs:
 
       - name: 📦 Trace 아카이브 압축
         if: always()
-        run: zip -r trace-artifacts.zip playwright-report/ || true
-
+        run: |
+          mkdir -p traces
+          find test-results -name "trace.zip" -exec cp {} traces/ \;
+          zip -r trace-artifacts.zip traces || true
+    
       - name: 📥 Trace 결과 업로드
         if: always()
         uses: actions/upload-artifact@v4
