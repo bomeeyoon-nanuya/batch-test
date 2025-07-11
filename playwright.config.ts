@@ -5,7 +5,7 @@ export default defineConfig({
   use: {
     launchOptions: {
       headless: true,
-      args: ['--disable-blink-features=AutomationControlled'],
+      args: ['--no-sandbox', '--disable-blink-features=AutomationControlled'],
     }
   },
 });
