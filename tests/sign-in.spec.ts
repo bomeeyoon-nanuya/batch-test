@@ -10,7 +10,7 @@ test('일반 회원 로그인', async ({ page }) => {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/115 Safari/537.36'
     });
 
-    await page.goto('https://alpha-service.shopby.co.kr/login?redirectUrl=%2F', {
+    await page.goto('https://service.shopby.co.kr/login?redirectUrl=%2F', {
         waitUntil: 'domcontentloaded',
         timeout: 60000,
     });
@@ -29,7 +29,7 @@ test('일반 회원 로그인', async ({ page }) => {
   // 로그인 응답 대기
   await page.waitForTimeout(7000);
 
-  await page.goto('https://alpha-service.shopby.co.kr/member/list');
+  await page.goto('https://service.shopby.co.kr/member/list');
   
   // 어드민 조회 응답 대기
   await page.waitForTimeout(3000);
